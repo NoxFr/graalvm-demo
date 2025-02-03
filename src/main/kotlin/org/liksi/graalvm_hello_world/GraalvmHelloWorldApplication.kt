@@ -3,6 +3,7 @@ package org.liksi.graalvm_hello_world
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.ImportRuntimeHints
 import org.springframework.web.bind.annotation.GetMapping
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
+import org.springframework.web.client.getForObject
+import java.time.Instant
 
 @SpringBootApplication
 class GraalvmHelloWorldApplication
@@ -31,22 +34,23 @@ class HelloWorldController {
 @RestController
 class HelloWorldRemoteController {
 
-    data class HelloDto(val message: String)
+    data class HelloDto(
+        val message: String,
+        // 2.   val metadata: Metadata
+    ) {
+        data class Metadata(val timestamp: Instant = Instant.now())
+    }
 
-    @GetMapping("/remote-hello")
+    @GetMapping("/hello-remote")
     fun helloRemote(): String? {
-        val apiResponse = RestClient
-            .builder()
+        val apiResponse = RestTemplateBuilder()
             .build()
-            .get()
-            .uri("http://localhost:8080/hello")
-            .retrieve()
-            .body<HelloDto>()
+            .getForObject<HelloDto>("http://localhost:8080/hello")
 
-        return apiResponse?.message
+        return apiResponse.message
     }
 }
 
-//@Configuration
+// 1 @Configuration
 @RegisterReflectionForBinding(HelloWorldRemoteController.HelloDto::class)
 class RuntimeConfiguration
