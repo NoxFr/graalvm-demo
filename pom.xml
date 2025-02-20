@@ -59,7 +59,7 @@
                 <artifactId>native-maven-plugin</artifactId>
                 <configuration>
                     <buildArgs>
-                        <arg>-Ob</arg>
+                        <arg>--color=always</arg>
                     </buildArgs>
                 </configuration>
             </plugin>

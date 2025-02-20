@@ -36,7 +36,7 @@ class HelloWorldRemoteController {
 
     data class HelloDto(
         val message: String,
-        // 2.   val metadata: Metadata
+        val metadata: Metadata
     ) {
         data class Metadata(val timestamp: Instant = Instant.now())
     }
@@ -51,6 +51,8 @@ class HelloWorldRemoteController {
     }
 }
 
-// 1 @Configuration
-@RegisterReflectionForBinding(HelloWorldRemoteController.HelloDto::class)
+@Configuration
+@RegisterReflectionForBinding(
+    HelloWorldRemoteController.HelloDto::class,
+    HelloWorldRemoteController.HelloDto.Metadata::class)
 class RuntimeConfiguration
