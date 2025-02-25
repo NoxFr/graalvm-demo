@@ -3,12 +3,20 @@
 ```bash
     ./mvnw native:compile -Pnative -DskipTests
 ```
+
+Binaire sans les hints
+___
 ```bash
-    ./target/graalvm-hello-world.exe
+    ./bin/windows/step1.exe
+```
+Binaire avec les hints
+___
+```bash
+    ./bin/windows/step2.exe
 ```
 
 ```bash
-    java -jar ./target/graalvm-hello-world-0.0.1-SNAPSHOT.jar
+    java -jar ./bin/java/app.jar
 ```
 
 # Browser
